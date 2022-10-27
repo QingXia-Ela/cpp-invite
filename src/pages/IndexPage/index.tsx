@@ -55,45 +55,29 @@ function IndexPage() {
     }
   })
 
-  const scaleNum = 600
   const Models: ParticleModelProps[] = [
-    {
-      name: 'cube',
-      path: new URL('../../THREE/models/examples/cube.obj', import.meta.url).href,
-      onLoadComplete(Geometry, PointGeometry) {
-        const s = 400
-        Geometry.scale(s, s, s)
-        Geometry.translate(500, 0, 0)
-      }
-    },
     {
       name: 'ball',
       path: new URL('../../THREE/models/examples/ball.obj', import.meta.url).href,
-      onLoadComplete(Geometry, PointGeometry) {
-        Geometry.scale(scaleNum, scaleNum, scaleNum)
-        Geometry.translate(-600, 0, -100)
-      },
-      onEnterStart(PointGeometry) {
-        console.log('ball enter start')
-      },
-      onEnterEnd(PointGeometry) {
-        console.log('ball enter end')
+      onLoadComplete(Geometry) {
+        const s = 620
+        Geometry.scale(s, s, s)
+        Geometry.rotateX(Math.PI * 0.35)
+        Geometry.rotateY(Math.PI * -0.06)
+        Geometry.rotateZ(Math.PI * -0.1)
+        Geometry.translate(-600, 100, -200)
+        // MainParticle?.ListenMouseMove()
       }
     },
     {
-      name: 'AngularSphere',
-      path: new URL('../../THREE/models/examples/AngularSphere.obj', import.meta.url).href,
-      onLoadComplete(Geometry, PointGeometry) {
-        Geometry.scale(scaleNum, scaleNum, scaleNum)
-        Geometry.translate(600, 0, -100)
-      }
-    },
-    {
-      name: 'cone',
-      path: new URL('../../THREE/models/examples/cone.obj', import.meta.url).href,
-      onLoadComplete(Geometry, PointGeometry) {
-        Geometry.scale(scaleNum, scaleNum, scaleNum)
-        Geometry.translate(-600, 100, -100)
+      name: 'cpp',
+      path: new URL('../../THREE/models/cpp.obj', import.meta.url).href,
+      onLoadComplete(Geometry) {
+        const s = 5000
+        Geometry.scale(s, s, s)
+        Geometry.rotateX(Math.PI * 0.5)
+        Geometry.translate(-1200, -600, 0)
+        console.log(Geometry.getAttribute('position').count)
       }
     }
   ]
@@ -135,9 +119,11 @@ function IndexPage() {
         onModelsFinishedLoad: (point) => {
           point.rotation.y = -3.14 * 0.8
           new Tween.Tween(point.rotation).to({ y: 0 }, 10000).easing(Tween.Easing.Quintic.Out).start()
+          MainParticle?.ChangeModel('cpp', 1500)
           setTimeout(() => {
-            MainParticle?.ChangeModel('ball', 2000)
-          }, 2500)
+            MainParticle?.StopListenMouseMove()
+            MainParticle?.AlignCameraCenter(true)
+          }, 0)
           MainParticle?.ListenMouseMove()
         }
       })

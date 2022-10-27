@@ -212,11 +212,12 @@ class ParticleSystem {
   private createEffect() {
     this.composer = new EffectComposer(this.renderer!)
     const renderPass = new RenderPass(this.scene!, this.camera!)
-    const bloomPass = new BloomPass(0.75)
+    const bloomPass = new BloomPass(0.8)
     const filmPass = new FilmPass(0.5, 0.5, 1500, 0)
     const shaderPass = new ShaderPass(FocusShader)
     shaderPass.uniforms.screenWidth.value = window.innerWidth
     shaderPass.uniforms.screenHeight.value = window.innerHeight
+    shaderPass.uniforms.sampleDistance.value = 0.75
     shaderPass.renderToScreen = true
 
     this.composer.addPass(renderPass)
@@ -232,8 +233,6 @@ class ParticleSystem {
     this.PointMaterial = new THREE.PointsMaterial({
       // 粒子大小
       size: 5,
-      // false:粒子尺寸相同 ;true：取决于摄像头远近
-      sizeAttenuation: true,
       transparent: true,
       opacity: 1,
       blending: THREE.AdditiveBlending,
@@ -295,6 +294,7 @@ class ParticleSystem {
       })
 
     this.maxParticlesCount = maxParticlesCount
+
     // 基于最大点构建一个动画载体
     const vertices = []
     const randMaxLength = 1500
@@ -321,7 +321,7 @@ class ParticleSystem {
       this.ParticleAnimeMap[i] = p
     }
     const AnimateEffectGeometry = new THREE.BufferGeometry()
-    AnimateEffectGeometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3, false))
+    AnimateEffectGeometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3))
     this.AnimateEffectParticle = new THREE.Points(AnimateEffectGeometry, this.PointMaterial)
     this.scene?.add(this.AnimateEffectParticle)
 
