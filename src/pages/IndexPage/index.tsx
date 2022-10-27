@@ -9,7 +9,7 @@ import Tween from '@tweenjs/tween.js'
 
 function IndexPage() {
   const wrapper = useRef<HTMLDivElement | null>(null)
-  let MainParticle: ParticleSystem | null = null
+  const MainParticle: ParticleSystem | null = null
 
   const TurnBasicNum = { firefly: 0.002 }
   const al = 1500
@@ -88,30 +88,31 @@ function IndexPage() {
     }
   }
 
-  const listener = new THREE.AudioListener()
+  // const listener = new THREE.AudioListener()
 
-  // 创建一个全局 audio 源
-  const sound = new THREE.Audio(listener)
+  // // 创建一个全局 audio 源
+  // const sound = new THREE.Audio(listener)
 
-  // 加载一个 sound 并将其设置为 Audio 对象的缓冲区
-  const audioLoader = new THREE.AudioLoader()
-  audioLoader.load(new URL('../../assets/audio/bgm.mp3', import.meta.url).href, function (buffer) {
-    sound.setBuffer(buffer)
-    sound.setLoop(true)
-    sound.setVolume(0.25)
-  })
+  // // 加载一个 sound 并将其设置为 Audio 对象的缓冲区
+  // const audioLoader = new THREE.AudioLoader()
+  // audioLoader.load(new URL('../../assets/audio/bgm.mp3', import.meta.url).href, function (buffer) {
+  //   sound.setBuffer(buffer)
+  //   sound.setLoop(true)
+  //   sound.setVolume(0.25)
+  // })
 
-  let hasOperate = false
+  // let hasOperate = false
 
-  window.addEventListener('click', () => {
-    if (!hasOperate) {
-      sound.play()
-      hasOperate = true
-    }
-  })
+  // window.addEventListener('click', () => {
+  //   if (!hasOperate) {
+  //     sound.play()
+  //     hasOperate = true
+  //   }
+  // })
 
   useEffect(() => {
     if ((MainParticle == null) && wrapper.current != null) {
+      /*
       MainParticle = new ParticleSystem({
         CanvasWrapper: wrapper.current,
         Models,
@@ -127,6 +128,7 @@ function IndexPage() {
           MainParticle?.ListenMouseMove()
         }
       })
+      */
     }
   })
 

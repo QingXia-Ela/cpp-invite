@@ -29,6 +29,7 @@ module.exports = {
     '@typescript-eslint/no-unused-vars': 'warn',
     '@typescript-eslint/no-non-null-assertion': 'off',
     '@typescript-eslint/prefer-optional-chain': 'off',
-    'no-useless-call': 'off'
+    'no-useless-call': 'off',
+    'no-constant-condition': 'warn'
   }
 }
