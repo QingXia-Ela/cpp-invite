@@ -1,12 +1,19 @@
 import * as React from 'react'
 import Styles from './index.module.scss'
 import IndexPage from '@/pages/IndexPage'
-import Loading from './Loading'
+import Loading, { LoadingMethods } from './Loading'
 
 function Layout() {
+  const LoadingRef = React.createRef<LoadingMethods>()
+
+  React.useEffect(() => {
+    setTimeout(() => {
+      LoadingRef.current?.FinishLoad()
+    }, 5000)
+  })
   return (
     <div className={Styles.layout}>
-      <Loading />
+      <Loading onRef={LoadingRef} />
       <IndexPage />
     </div>
   )

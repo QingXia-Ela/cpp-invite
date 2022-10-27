@@ -30,6 +30,7 @@ module.exports = {
     '@typescript-eslint/no-non-null-assertion': 'off',
     '@typescript-eslint/prefer-optional-chain': 'off',
     'no-useless-call': 'off',
-    'no-constant-condition': 'warn'
+    'no-constant-condition': 'warn',
+    'react/prop-types': 'off'
   }
 }
