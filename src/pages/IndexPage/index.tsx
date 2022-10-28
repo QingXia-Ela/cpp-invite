@@ -84,7 +84,7 @@ function IndexPage() {
   // @ts-expect-error
   window.changeModel = (name: string) => {
     if (MainParticle != null) {
-      MainParticle.ChangeModel(name)
+      // MainParticle.ChangeModel(name)
     }
   }
 

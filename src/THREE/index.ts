@@ -9,13 +9,13 @@ import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass'
 import { FocusShader } from 'three/examples/jsm/shaders/FocusShader'
 
 import Tween from '@tweenjs/tween.js'
-import type { Tween as TweenProps, Group as TweenGroup } from '@tweenjs/tween.js'
+import type { Group as TweenGroup } from '@tweenjs/tween.js'
 
 import Stats from 'three/examples/jsm/libs/stats.module.js'
 import { throttle } from 'lodash'
 
 import g from '@/assets/images/gradient.png'
-import { ParticleModelProps } from '@/declare/THREE'
+import { ParticleModelProps, TWEEN_POINT } from '@/declare/THREE'
 import VerticesDuplicateRemove from '@/utils/VerticesDuplicateRemove.js'
 
 function getRangeRandom(e: number, t: number) {
@@ -23,12 +23,6 @@ function getRangeRandom(e: number, t: number) {
 }
 
 type THREE_POINT = THREE.Points<THREE.BufferGeometry, THREE.PointsMaterial>
-interface TWEEN_POINT {
-  x: number
-  y: number
-  z: number
-  tweenctx?: TweenProps<{ x: number, y: number, z: number }>
-}
 
 class ParticleSystem {
   private readonly CanvasWrapper: HTMLDivElement
@@ -58,13 +52,14 @@ class ParticleSystem {
   private hadListenMouseMove?: boolean
   private MainParticleGroup?: TweenGroup
   private readonly defaultLoader: OBJLoader
-  private readonly ParticleAnimeMap: TWEEN_POINT[]
+  /** 表演粒子 tween 实例数组 */
+  public readonly ParticleAnimeMap: TWEEN_POINT[]
   /** 模型数组 */
   public Models: Map<string, ParticleModelProps>
   /** 额外插件的数组 */
   public addons?: any[]
   // 函数相关
-  /** 当所有模型加载完成是进行调用 */
+  /** 当所有模型加载完成时进行调用 */
   private readonly onModelsFinishedLoad?: (preformPoint: THREE_POINT, scene: THREE.Scene) => void
   /** 对象内置的更新函数，内部使用 `requestAnimationFrame`，每渲染新的一帧时进行调用 */
   public onRendering?: (t: number) => void
@@ -78,7 +73,6 @@ class ParticleSystem {
     /** addons，他应该是一个继承了 `addonsBasic` 类的对象 */
     addons?: any[]
     AnimateDuration?: number
-    AnimateDelayDuration?: number
     onModelsFinishedLoad?: (preformPoint: THREE_POINT, scene: THREE.Scene) => void
   }) {
     const { AnimateDuration, onModelsFinishedLoad } = options
@@ -212,12 +206,11 @@ class ParticleSystem {
   private createEffect() {
     this.composer = new EffectComposer(this.renderer!)
     const renderPass = new RenderPass(this.scene!, this.camera!)
-    const bloomPass = new BloomPass(0.8)
+    const bloomPass = new BloomPass(0.75)
     const filmPass = new FilmPass(0.5, 0.5, 1500, 0)
     const shaderPass = new ShaderPass(FocusShader)
     shaderPass.uniforms.screenWidth.value = window.innerWidth
     shaderPass.uniforms.screenHeight.value = window.innerHeight
-    shaderPass.uniforms.sampleDistance.value = 0.75
     shaderPass.renderToScreen = true
 
     this.composer.addPass(renderPass)
@@ -233,6 +226,8 @@ class ParticleSystem {
     this.PointMaterial = new THREE.PointsMaterial({
       // 粒子大小
       size: 5,
+      // false:粒子尺寸相同 ;true：取决于摄像头远近
+      sizeAttenuation: true,
       transparent: true,
       opacity: 1,
       blending: THREE.AdditiveBlending,
@@ -294,7 +289,6 @@ class ParticleSystem {
       })
 
     this.maxParticlesCount = maxParticlesCount
-
     // 基于最大点构建一个动画载体
     const vertices = []
     const randMaxLength = 1500
@@ -306,7 +300,10 @@ class ParticleSystem {
       vertices.push(x, y, z)
 
       const p: TWEEN_POINT = {
-        x, y, z
+        x,
+        y,
+        z,
+        isPlaying: true
       }
       p.tweenctx = new Tween.Tween(p, this.MainParticleGroup).easing(Tween.Easing.Exponential.In)
         // 处理内部私有变量
@@ -317,11 +314,20 @@ class ParticleSystem {
           o.tweenctx!._valuesStart.y = o.y
           // @ts-expect-error
           o.tweenctx!._valuesStart.z = o.z
+          o.isPlaying = false
+        }).onStart((o) => {
+          // @ts-expect-error
+          o.tweenctx!._valuesStart.x = o.x
+          // @ts-expect-error
+          o.tweenctx!._valuesStart.y = o.y
+          // @ts-expect-error
+          o.tweenctx!._valuesStart.z = o.z
+          o.isPlaying = true
         })
       this.ParticleAnimeMap[i] = p
     }
     const AnimateEffectGeometry = new THREE.BufferGeometry()
-    AnimateEffectGeometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3))
+    AnimateEffectGeometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3, false))
     this.AnimateEffectParticle = new THREE.Points(AnimateEffectGeometry, this.PointMaterial)
     this.scene?.add(this.AnimateEffectParticle)
 
@@ -343,6 +349,8 @@ class ParticleSystem {
       return
     }
     const itemHook = this.Models.get(name)
+    if (this.CurrentUseModelName !== undefined) this.LastUseModelName = this.CurrentUseModelName
+    this.CurrentUseModelName = name
     /** 模型切换开始的钩子 */
     itemHook!.onEnterStart?.call(this, this.AnimateEffectParticle!)
     const targetModel = item.getAttribute('position')
@@ -354,6 +362,7 @@ class ParticleSystem {
     // 停止当前所有动画
     for (let i = 0; i < this.maxParticlesCount; i++) {
       const p = this.ParticleAnimeMap[i]?.tweenctx
+      this.ParticleAnimeMap[i]!.isPlaying = true
       const cur = i % targetModel.count
       p?.stop().to(
         {
@@ -373,6 +382,7 @@ class ParticleSystem {
         o.tweenctx!._valuesStart.y = o.y
         // @ts-expect-error
         o.tweenctx!._valuesStart.z = o.z
+        o.isPlaying = false
       }).start()
     }
     // 触发 addons 的钩子
@@ -451,6 +461,11 @@ class ParticleSystem {
     this.stats?.update()
     // 场景旋转检测
     this._updateRotation()
+    // 模型 update 钩子更新
+    this.Models.forEach((val) => {
+      (val.name === this.CurrentUseModelName && val.onAnimationFrameUpdate != null) &&
+        val.onAnimationFrameUpdate(this.AnimateEffectParticle!, this.ParticleAnimeMap)
+    })
     // addons 执行更新
     this.addons?.forEach((val) => {
       val.update()
