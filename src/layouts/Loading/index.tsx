@@ -3,10 +3,13 @@ import Styles from './index.module.scss'
 import logo from '@/assets/cpp.svg'
 import Progress from './Progress'
 import Nprogress from 'nprogress'
+import { unMuteBGM } from '@/store/volume/action'
+import { connect } from 'react-redux'
 
 export type LoadingProps = React.PropsWithRef<{
   onRef: React.Ref<any>
   onEnter?: Function
+  unMuteBGM: Function
 }>
 
 export interface LoadingMethods {
@@ -37,6 +40,7 @@ function Loading(props: LoadingProps) {
 
   function Enter() {
     changeHide(true)
+    props.unMuteBGM()
     setTimeout(() => {
       changeShowUp(false);
       (props.onEnter != null) && props.onEnter()
@@ -64,4 +68,4 @@ function Loading(props: LoadingProps) {
   )
 }
 
-export default Loading
+export default connect(() => ({}), { unMuteBGM })(Loading)
