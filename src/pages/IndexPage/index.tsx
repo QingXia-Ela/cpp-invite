@@ -6,6 +6,8 @@ import AtmosphereParticle from '@/THREE/atmosphere'
 import { ParticleModelProps } from '@/declare/THREE'
 import * as THREE from 'three'
 import Tween from '@tweenjs/tween.js'
+import { Swiper, SwiperSlide } from 'swiper/react'
+import Congralution from './Congralution'
 
 function IndexPage() {
   const wrapper = useRef<HTMLDivElement | null>(null)
@@ -16,7 +18,7 @@ function IndexPage() {
 
   const tween2 = new Tween.Tween(TurnBasicNum).easing(Tween.Easing.Exponential.In)
   const tween1 = new Tween.Tween(TurnBasicNum).easing(Tween.Easing.Exponential.In)
-
+  /*
   const Atomsphere1 = new AtmosphereParticle({
     longestDistance: al,
     particleSum: 500,
@@ -54,7 +56,8 @@ function IndexPage() {
       Point.position.z = -1.2 * al
     }
   })
-
+*/
+  /*
   const Models: ParticleModelProps[] = [
     {
       name: 'ball',
@@ -81,6 +84,7 @@ function IndexPage() {
       }
     }
   ]
+  */
   // @ts-expect-error
   window.changeModel = (name: string) => {
     if (MainParticle != null) {
@@ -89,30 +93,26 @@ function IndexPage() {
   }
 
   useEffect(() => {
-    if ((MainParticle == null) && wrapper.current != null) {
-      /*
-      MainParticle = new ParticleSystem({
-        CanvasWrapper: wrapper.current,
-        Models,
-        addons: [Atomsphere1, Atomsphere2, Atomsphere3],
-        onModelsFinishedLoad: (point) => {
-          point.rotation.y = -3.14 * 0.8
-          new Tween.Tween(point.rotation).to({ y: 0 }, 10000).easing(Tween.Easing.Quintic.Out).start()
-          MainParticle?.ChangeModel('cpp', 1500)
-          setTimeout(() => {
-            MainParticle?.StopListenMouseMove()
-            MainParticle?.AlignCameraCenter(true)
-          }, 0)
-          MainParticle?.ListenMouseMove()
-        }
-      })
-      */
-    }
+    // if ((MainParticle == null) && wrapper.current != null) {
+    // }
   })
 
   return (
     <div className={Styles.index_page}>
       <div className={Styles.canvas_wrapper} ref={wrapper}></div>
+      <Swiper
+        className={Styles.main_swiper + ' swiper-no-swiping'}
+        slidesPerView={1}
+        speed={600}
+        direction='vertical'
+        mousewheel={true}
+        noSwiping={true}
+      >
+        <SwiperSlide>
+          <Congralution />
+        </SwiperSlide>
+        <SwiperSlide>2</SwiperSlide>
+      </Swiper>
     </div>
   )
 }

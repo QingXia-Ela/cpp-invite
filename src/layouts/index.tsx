@@ -6,7 +6,6 @@ import Loading, { LoadingMethods } from './Loading'
 
 function Layout() {
   const LoadingRef = React.createRef<LoadingMethods>()
-
   const onEnter = () => {
   }
 

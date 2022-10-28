@@ -1,0 +1,13 @@
+.text_content {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: space-between;
+  // align-items: center;
+  position: absolute;
+  top: 50%;
+  left: 3.6rem;
+  width: 45%;
+  height: 7.5rem;
+  font-size: .7rem;
+  transform: translateY(-50%);
+}

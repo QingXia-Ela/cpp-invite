@@ -18,9 +18,9 @@ export interface LoadingMethods {
 let id: any
 
 function Loading(props: LoadingProps) {
-  const [showUp, changeShowUp] = React.useState(true)
+  const [showUp, changeShowUp] = React.useState(false)
   const [hide, changeHide] = React.useState(false)
-  const [progress, changeProgress] = React.useState(0)
+  const [progress, changeProgress] = React.useState(100)
 
   React.useEffect(() => {
     Nprogress.start()
