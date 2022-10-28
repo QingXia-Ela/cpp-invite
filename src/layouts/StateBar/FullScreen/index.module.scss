@@ -1,3 +1,9 @@
 .full_screen {
   cursor: pointer;
 }
+
+@media screen and (max-width: 992px) {
+  .full_screen {
+    display: none;
+  }
+}

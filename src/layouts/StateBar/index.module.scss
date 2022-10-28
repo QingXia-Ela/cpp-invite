@@ -9,3 +9,13 @@
     margin: 0 .3rem;
   }
 }
+
+@media screen and (max-width: 992px) {
+  .state_bar {
+    right: 0.6rem;
+
+    .module {
+      margin: 0;
+    }
+  }
+}
