@@ -1,0 +1,11 @@
+.state_bar {
+  z-index: 1000;
+  display: flex;
+  position: fixed;
+  top: 0.6rem;
+  right: 1rem;
+
+  .module {
+    margin: 0 .3rem;
+  }
+}

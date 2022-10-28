@@ -1,0 +1,65 @@
+{
+  "id": "3734502",
+  "name": "cpp invite",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "7541957",
+      "name": "24gl-city4",
+      "font_class": "24gl-city4",
+      "unicode": "e832",
+      "unicode_decimal": 59442
+    },
+    {
+      "icon_id": "7542724",
+      "name": "24gl-scanCode",
+      "font_class": "24gl-scanCode",
+      "unicode": "e87e",
+      "unicode_decimal": 59518
+    },
+    {
+      "icon_id": "7547862",
+      "name": "24gl-heart",
+      "font_class": "24gl-heart",
+      "unicode": "e899",
+      "unicode_decimal": 59545
+    },
+    {
+      "icon_id": "7569989",
+      "name": "24gl-cross",
+      "font_class": "24gl-cross",
+      "unicode": "e97d",
+      "unicode_decimal": 59773
+    },
+    {
+      "icon_id": "7592566",
+      "name": "24gl-volumeZero",
+      "font_class": "24gl-volumeZero",
+      "unicode": "ea0d",
+      "unicode_decimal": 59917
+    },
+    {
+      "icon_id": "7592568",
+      "name": "24gl-volumeMiddle",
+      "font_class": "24gl-volumeMiddle",
+      "unicode": "ea0e",
+      "unicode_decimal": 59918
+    },
+    {
+      "icon_id": "7594025",
+      "name": "24gl-fullScreenEnter2",
+      "font_class": "24gl-fullScreenEnter2",
+      "unicode": "ea68",
+      "unicode_decimal": 60008
+    },
+    {
+      "icon_id": "7594029",
+      "name": "24gl-fullScreenExit2",
+      "font_class": "24gl-fullScreenExit2",
+      "unicode": "ea69",
+      "unicode_decimal": 60009
+    }
+  ]
+}

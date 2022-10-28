@@ -13,6 +13,11 @@
   height: 100vh;
 }
 
+.hide {
+  opacity: 0;
+  transition: opacity 0.8s;
+}
+
 .logo_svg {
   width: 2rem;
   height: 2rem;
