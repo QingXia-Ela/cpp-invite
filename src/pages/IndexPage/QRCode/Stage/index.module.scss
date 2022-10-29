@@ -1,6 +1,13 @@
 .stage {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   position: relative;
   width: 100%;
   height: 100%;
   padding: 2rem 4rem;
+  // background-image: url(@/assets/images/bigLogo.png);
+  // background-repeat: no-repeat;
+  // background-position: center;
+  // background-size: contain;
 }

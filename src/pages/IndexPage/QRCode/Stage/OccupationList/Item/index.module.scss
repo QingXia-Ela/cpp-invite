@@ -1,0 +1,23 @@
+.item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 20%;
+  height: 100%;
+  background-image: url(@/assets/images/lightBall.png);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  opacity: 0.8;
+  transform: scale(1.2);
+  transition: opacity .3s;
+  cursor: pointer;
+
+  &:hover {
+    opacity: 1;
+  }
+
+  .text {
+    font-size: .6rem;
+  }
+}
