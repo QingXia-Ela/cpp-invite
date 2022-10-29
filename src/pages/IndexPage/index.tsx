@@ -8,6 +8,7 @@ import * as THREE from 'three'
 import Tween from '@tweenjs/tween.js'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import Congralution from './Congralution'
+import QRCode from './QRCode'
 
 function IndexPage() {
   const wrapper = useRef<HTMLDivElement | null>(null)
@@ -106,12 +107,14 @@ function IndexPage() {
         speed={600}
         direction='vertical'
         mousewheel={true}
-        noSwiping={true}
+        noSwiping={false}
       >
         <SwiperSlide>
           <Congralution />
         </SwiperSlide>
-        <SwiperSlide>2</SwiperSlide>
+        <SwiperSlide>
+          <QRCode />
+        </SwiperSlide>
       </Swiper>
     </div>
   )
