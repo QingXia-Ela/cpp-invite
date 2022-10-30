@@ -77,6 +77,8 @@ function IndexPage() {
                 in={isActive}
                 timeout={1500}
                 classNames={{
+                  enter: 'poa',
+                  exit: 'poa',
                   enterActive: Styles.o0,
                   enterDone: Styles.o1,
                   exitActive: Styles.o0

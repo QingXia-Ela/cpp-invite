@@ -21,3 +21,10 @@
     font-size: .6rem;
   }
 }
+
+@media screen and (max-width: 992px) {
+  .item {
+    width: 50%;
+    height: 33.33%;
+  }
+}

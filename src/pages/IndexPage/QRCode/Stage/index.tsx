@@ -17,8 +17,8 @@ function Stage(props: any) {
           in={props.occupation === null}
           timeout={1500}
           classNames={{
-            enterActive: 'pn',
-            exitActive: 'pn'
+            enterActive: Styles.enter,
+            exitActive: Styles.exit
           }}
           onEntered={() => {
             changeOl(Styles.o1)
@@ -34,8 +34,8 @@ function Stage(props: any) {
           in={props.occupation !== null}
           timeout={1500}
           classNames={{
-            enterActive: 'pn',
-            exitActive: 'pn'
+            enterActive: Styles.enter,
+            exitActive: Styles.exit
           }}
           onEntered={() => {
             changeDl(Styles.o1)
