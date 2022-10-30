@@ -2,6 +2,10 @@
   position: relative;
   width: 100%;
   height: 100%;
+  opacity: 0;
+  filter: blur(100px);
+  transition-timing-function: linear;
+  transition: opacity 1.5s, filter 1.5s;
 
   .left_top_logo {
     position: absolute;

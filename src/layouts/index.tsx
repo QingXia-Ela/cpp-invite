@@ -3,7 +3,6 @@ import Styles from './index.module.scss'
 import IndexPage from '@/pages/IndexPage'
 import StateBar from './StateBar'
 import Loading, { LoadingMethods } from './Loading'
-import ScrollTip from './ScrollTip'
 
 function Layout() {
   const LoadingRef = React.createRef<LoadingMethods>()
@@ -20,7 +19,6 @@ function Layout() {
       <Loading onRef={LoadingRef} onEnter={onEnter} />
       <StateBar />
       <IndexPage />
-      <ScrollTip />
     </div>
   )
 }

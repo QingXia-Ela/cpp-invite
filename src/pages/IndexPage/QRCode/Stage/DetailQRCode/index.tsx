@@ -20,7 +20,7 @@ const DetailQRCode = (props: DetailQRCodeProps) => {
       <div className={Styles.back} onClick={() => props.changeOccupation(null)}>
         返回
       </div>
-      <div className={Styles.text_tip}>{temp}二轮招新群</div>
+      <div className={Styles.text_tip}>{temp}二轮考核群</div>
     </div>
   )
 }

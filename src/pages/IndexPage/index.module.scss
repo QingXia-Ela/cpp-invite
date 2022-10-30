@@ -21,3 +21,13 @@
 
   }
 }
+
+.o1 {
+  filter: blur(0px) !important;
+  opacity: 1 !important;
+}
+
+.o0 {
+  filter: blur(100px) !important;
+  opacity: 0 !important;
+}
