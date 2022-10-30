@@ -8,7 +8,6 @@ import { scroll } from '@/store/hasEnter/action'
 
 interface LayoutProps {
   enter: boolean
-  scrollAble: boolean
   scroll: Function
 }
 
