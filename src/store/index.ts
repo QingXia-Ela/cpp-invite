@@ -7,13 +7,15 @@ import { composeWithDevTools } from 'redux-devtools-extension'
 import VolumeStore from './volume/reducer'
 import FullScreenStore from './fullscreen/reducer'
 import OccupationStore from './occupation/reducer'
+import HasEnterStore from './hasEnter/reducer'
 
 import reduxThunk from 'redux-thunk'
 
 const r = combineReducers({
   VolumeStore,
   FullScreenStore,
-  OccupationStore
+  OccupationStore,
+  HasEnterStore
 })
 
 const actionSanitizer = (action: any) => action

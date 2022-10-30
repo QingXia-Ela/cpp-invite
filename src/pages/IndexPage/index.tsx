@@ -12,7 +12,16 @@ import Congralution from './Congralution'
 import QRCode from './QRCode'
 import { CSSTransition } from 'react-transition-group'
 
-function IndexPage() {
+import { connect } from 'react-redux'
+
+interface IndexPageProps extends React.HtmlHTMLAttributes<HTMLDivElement> {
+  scrollAble: boolean
+  scroll: boolean
+}
+
+let couldScroll = false
+
+function IndexPage(props: IndexPageProps) {
   const wrapper = useRef<HTMLDivElement | null>(null)
   const MainParticle: ParticleSystem | null = null
   let swiperObj: SwiperClass
@@ -24,11 +33,11 @@ function IndexPage() {
     }
   }
   function getSwiper(swiper: SwiperClass) { swiperObj = swiper }
-  function slideNext() { swiperObj.slideNext() }
-  function slidePrev() { swiperObj.slidePrev() }
-  let flag = true
+  function slideNext() { swiperObj?.slideNext() }
+  function slidePrev() { swiperObj?.slidePrev() }
+  let flag = true; let hasListen = false
   const t = (e: WheelEvent) => {
-    if (flag) {
+    if (couldScroll && flag) {
       flag = false
       e.deltaY > 0 ? slideNext() : slidePrev()
       setTimeout(() => {
@@ -38,11 +47,15 @@ function IndexPage() {
   }
 
   useEffect(() => {
-    window.addEventListener('wheel', t)
-  }, [])
+    if (props.scrollAble && props.scroll) couldScroll = true
+    if (!hasListen) {
+      window.addEventListener('wheel', t)
+      hasListen = true
+    }
+  })
 
   return (
-    <div className={Styles.index_page}>
+    <div className={`${Styles.index_page} ${props.scrollAble ? '' : Styles.hidden}`}>
       <div className={Styles.canvas_wrapper} ref={wrapper}></div>
       <Swiper
         className={Styles.main_swiper + ' swiper-no-swiping'}
@@ -94,4 +107,6 @@ function IndexPage() {
   )
 }
 
-export default IndexPage
+export default connect(({ HasEnterStore }) => ({
+  scrollAble: HasEnterStore.scrollAble
+}), {})(IndexPage)

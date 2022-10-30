@@ -5,11 +5,13 @@ import Progress from './Progress'
 import Nprogress from 'nprogress'
 import { unMuteBGM } from '@/store/volume/action'
 import { connect } from 'react-redux'
+import { enter } from '@/store/hasEnter/action'
 
 export type LoadingProps = React.PropsWithRef<{
   onRef: React.Ref<any>
   onEnter?: Function
   unMuteBGM: Function
+  enter: Function
 }>
 
 export interface LoadingMethods {
@@ -18,9 +20,9 @@ export interface LoadingMethods {
 let id: any
 
 function Loading(props: LoadingProps) {
-  const [showUp, changeShowUp] = React.useState(false)
+  const [showUp, changeShowUp] = React.useState(true)
   const [hide, changeHide] = React.useState(false)
-  const [progress, changeProgress] = React.useState(100)
+  const [progress, changeProgress] = React.useState(0)
 
   React.useEffect(() => {
     Nprogress.start()
@@ -44,6 +46,7 @@ function Loading(props: LoadingProps) {
     setTimeout(() => {
       changeShowUp(false);
       (props.onEnter != null) && props.onEnter()
+      props.enter()
     }, 900)
   }
 
@@ -68,4 +71,4 @@ function Loading(props: LoadingProps) {
   )
 }
 
-export default connect(() => ({}), { unMuteBGM })(Loading)
+export default connect(() => ({}), { unMuteBGM, enter })(Loading)

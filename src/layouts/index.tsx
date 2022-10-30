@@ -3,24 +3,42 @@ import Styles from './index.module.scss'
 import IndexPage from '@/pages/IndexPage'
 import StateBar from './StateBar'
 import Loading, { LoadingMethods } from './Loading'
+import { connect } from 'react-redux'
+import { scroll } from '@/store/hasEnter/action'
 
-function Layout() {
+interface LayoutProps {
+  enter: boolean
+  scrollAble: boolean
+  scroll: Function
+}
+
+const Layout: React.FunctionComponent<LayoutProps> = (props) => {
   const LoadingRef = React.createRef<LoadingMethods>()
   const onEnter = () => {
   }
 
+  const [outerScroll, setOuterScroll] = React.useState(false)
+
   React.useEffect(() => {
+    if (props.enter) {
+      setTimeout(() => {
+        props.scroll()
+        setOuterScroll(true)
+      }, 5000)
+    }
     setTimeout(() => {
       LoadingRef.current?.FinishLoad()
     }, 5000)
-  })
+  }, [props.enter])
   return (
     <div className={Styles.layout}>
       <Loading onRef={LoadingRef} onEnter={onEnter} />
       <StateBar />
-      <IndexPage />
+      <IndexPage scroll={outerScroll} />
     </div>
   )
 }
 
-export default Layout
+export default connect(({ HasEnterStore }) => ({
+  enter: HasEnterStore.hasEnter
+}), { scroll })(Layout)
