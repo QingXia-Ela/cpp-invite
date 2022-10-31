@@ -45,7 +45,9 @@ function IndexPage(props: IndexPageProps) {
     new Tween.Tween(MainParticle!.AnimateEffectParticle!.rotation).to({ y: 0 }, 10000).easing(Tween.Easing.Quintic.Out).start()
     setTimeout(() => {
       MainParticle?.ChangeModel('logo', 1500)
-      changing = false
+      setTimeout(() => {
+        changing = false
+      }, 1500)
     }, 1500)
   }
   let flag = true; let hasListen = false
@@ -74,10 +76,7 @@ function IndexPage(props: IndexPageProps) {
     if ((MainParticle == null) && wrapper.current != null) {
       MainParticle = new ParticleSystem({
         CanvasWrapper: wrapper.current,
-        Models,
-        onModelsFinishedLoad: (point) => {
-
-        }
+        Models
       })
     }
   })
@@ -97,7 +96,7 @@ function IndexPage(props: IndexPageProps) {
         >
           <SwiperSlide>
             {({ isActive }) => {
-              if (isActive) MainParticle?.ChangeModel('logo', 1500)
+              if (!changing && isActive) MainParticle?.ChangeModel('logo', 1500)
               return (
                 <CSSTransition
                   in={isActive}
@@ -115,7 +114,7 @@ function IndexPage(props: IndexPageProps) {
           </SwiperSlide>
           <SwiperSlide>
             {({ isActive }) => {
-              if (isActive) MainParticle?.ChangeModel('kv', 1500)
+              if (!changing && isActive) MainParticle?.ChangeModel('kv', 1500)
               return (
                 <CSSTransition
                   in={isActive}

@@ -384,7 +384,6 @@ class ParticleSystem {
         o.tweenctx!._valuesStart.y = o.y
         // @ts-expect-error
         o.tweenctx!._valuesStart.z = o.z
-        o.isPlaying = false
       }).start()
     }
     // 触发 addons 的钩子
