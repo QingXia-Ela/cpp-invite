@@ -22,7 +22,7 @@ let id: any
 function Loading(props: LoadingProps) {
   const [showUp, changeShowUp] = React.useState(true)
   const [hide, changeHide] = React.useState(false)
-  const [progress, changeProgress] = React.useState(0)
+  const [progress, changeProgress] = React.useState(100)
 
   React.useEffect(() => {
     Nprogress.start()
@@ -42,11 +42,11 @@ function Loading(props: LoadingProps) {
 
   function Enter() {
     changeHide(true)
-    props.unMuteBGM()
+    props.unMuteBGM();
+    (props.onEnter != null) && props.onEnter()
+    props.enter()
     setTimeout(() => {
-      changeShowUp(false);
-      (props.onEnter != null) && props.onEnter()
-      props.enter()
+      changeShowUp(false)
     }, 900)
   }
 

@@ -107,5 +107,5 @@ export interface ParticleModelProps {
    * @param PerfromPoint 表演粒子实例，即渲染到屏幕上的实例
    * @param TweenList tween 示例列表
    */
-  onAnimationFrameUpdate?: (PerfromPoint: THREE.Points<THREE.BufferGeometry, THREE.PointsMaterial>, TweenList: TWEEN_POINT[]) => void
+  onAnimationFrameUpdate?: (PerfromPoint: THREE.Points<THREE.BufferGeometry, THREE.PointsMaterial>, TweenList: TWEEN_POINT[], Geometry: THREE.BufferGeometry | undefined) => void
 }

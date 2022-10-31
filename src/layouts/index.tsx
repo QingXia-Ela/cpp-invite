@@ -13,7 +13,9 @@ interface LayoutProps {
 
 const Layout: React.FunctionComponent<LayoutProps> = (props) => {
   const LoadingRef = React.createRef<LoadingMethods>()
+  const IndexRef = React.createRef<any>()
   const onEnter = () => {
+    IndexRef?.current.beginPerform()
   }
 
   const [outerScroll, setOuterScroll] = React.useState(false)
@@ -33,7 +35,7 @@ const Layout: React.FunctionComponent<LayoutProps> = (props) => {
     <div className={Styles.layout}>
       <Loading onRef={LoadingRef} onEnter={onEnter} />
       <StateBar />
-      <IndexPage scroll={outerScroll} />
+      <IndexPage onRef={IndexRef} scroll={outerScroll} />
     </div>
   )
 }

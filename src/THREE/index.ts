@@ -139,9 +139,9 @@ class ParticleSystem {
     this.camera.position.set(0, 0, 1e3)
     this.camera.lookAt(new THREE.Vector3(0, 0, 0))
 
-    // 坐标轴辅助器
-    const axesHelper = new THREE.AxesHelper(500)
-    this.scene.add(axesHelper)
+    // // 坐标轴辅助器
+    // const axesHelper = new THREE.AxesHelper(300)
+    // this.scene.add(axesHelper)
     // addons 添加
     if (this.addons != null) {
       this.addons.forEach((val) => {
@@ -211,6 +211,7 @@ class ParticleSystem {
     const shaderPass = new ShaderPass(FocusShader)
     shaderPass.uniforms.screenWidth.value = window.innerWidth
     shaderPass.uniforms.screenHeight.value = window.innerHeight
+    shaderPass.uniforms.sampleDistance.value = 0.4
     shaderPass.renderToScreen = true
 
     this.composer.addPass(renderPass)
@@ -266,6 +267,7 @@ class ParticleSystem {
             if (i.NeedRemoveDuplicateParticle === true) finalVertices = VerticesDuplicateRemove(finalVertices)
 
             finalGeometry = new THREE.BufferGeometry()
+            i.geometry = finalGeometry
             // 粒子去重
             finalGeometry.setAttribute('position', new THREE.BufferAttribute(VerticesDuplicateRemove(finalVertices), 3))
             finishLoad()
@@ -464,7 +466,7 @@ class ParticleSystem {
     // 模型 update 钩子更新
     this.Models.forEach((val) => {
       (val.name === this.CurrentUseModelName && val.onAnimationFrameUpdate != null) &&
-        val.onAnimationFrameUpdate(this.AnimateEffectParticle!, this.ParticleAnimeMap)
+        val.onAnimationFrameUpdate(this.AnimateEffectParticle!, this.ParticleAnimeMap, val.geometry)
     })
     // addons 执行更新
     this.addons?.forEach((val) => {
