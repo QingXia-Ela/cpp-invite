@@ -1,0 +1,25 @@
+.bottom_text {
+  z-index: 1000;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: fixed;
+  bottom: .6rem;
+  width: 100vw;
+  font-size: .3rem;
+  font-weight: 700;
+
+  .left {
+    margin-left: 1.6rem;
+  }
+
+  .right {
+    margin-right: 1.6rem;
+  }
+}
+
+@media screen and (max-width: 992px) {
+  .bottom_text {
+    display: none;
+  }
+}

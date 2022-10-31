@@ -22,13 +22,13 @@
 }
 
 a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
+  font-weight: 700;
+  color: #fff;
+  text-decoration: underline;
 }
 
 a:hover {
-  color: #535bf2;
+  color: #fff;
 }
 
 html {
@@ -89,19 +89,4 @@ button:focus-visible {
 
 .pn {
   pointer-events: none;
-}
-
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-
-  a:hover {
-    color: #747bff;
-  }
-
-  button {
-    background-color: #f9f9f9;
-  }
 }

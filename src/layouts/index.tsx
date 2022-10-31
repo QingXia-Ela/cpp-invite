@@ -2,7 +2,9 @@ import * as React from 'react'
 import Styles from './index.module.scss'
 import IndexPage from '@/pages/IndexPage'
 import StateBar from './StateBar'
+import BottomText from './BottomText'
 import Loading, { LoadingMethods } from './Loading'
+
 import { connect } from 'react-redux'
 import { scroll } from '@/store/hasEnter/action'
 
@@ -36,6 +38,7 @@ const Layout: React.FunctionComponent<LayoutProps> = (props) => {
       <Loading onRef={LoadingRef} onEnter={onEnter} />
       <StateBar />
       <IndexPage onRef={IndexRef} scroll={outerScroll} />
+      <BottomText />
     </div>
   )
 }
