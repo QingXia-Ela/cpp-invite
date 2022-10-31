@@ -226,7 +226,7 @@ class ParticleSystem {
     TextureLoader.crossOrigin = ''
     this.PointMaterial = new THREE.PointsMaterial({
       // 粒子大小
-      size: 5,
+      size: 7,
       // false:粒子尺寸相同 ;true：取决于摄像头远近
       sizeAttenuation: true,
       transparent: true,

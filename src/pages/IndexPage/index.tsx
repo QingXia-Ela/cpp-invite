@@ -15,12 +15,14 @@ import { CSSTransition } from 'react-transition-group'
 import { connect } from 'react-redux'
 
 import Models from './Models'
+import { setParticleContext } from '@/store/particle/action'
 
 interface IndexPageProps extends React.HtmlHTMLAttributes<HTMLDivElement> {
   scrollAble: boolean
   scroll: boolean
   hasEnter: boolean
   onRef: React.Ref<any>
+  setParticleContext: Function
 }
 
 let couldScroll = false
@@ -78,6 +80,7 @@ function IndexPage(props: IndexPageProps) {
         CanvasWrapper: wrapper.current,
         Models
       })
+      props.setParticleContext(MainParticle)
     }
   })
 
@@ -141,4 +144,6 @@ function IndexPage(props: IndexPageProps) {
 export default connect(({ HasEnterStore }) => ({
   scrollAble: HasEnterStore.scrollAble,
   hasEnter: HasEnterStore.hasEnter
-}), {})(IndexPage)
+}), {
+  setParticleContext
+})(IndexPage)
