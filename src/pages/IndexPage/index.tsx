@@ -2,32 +2,32 @@ import * as React from 'react'
 import Styles from './index.module.scss'
 import ParticleSystem from '@/THREE'
 import { useEffect, useRef } from 'react'
-import AtmosphereParticle from '@/THREE/atmosphere'
-import { ParticleModelProps } from '@/declare/THREE'
-import * as THREE from 'three'
 import Tween from '@tweenjs/tween.js'
 import type SwiperClass from 'swiper'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import Congralution from './Congralution'
 import QRCode from './QRCode'
+import Atomsphere from './Atomsphere'
 import { CSSTransition } from 'react-transition-group'
 
 import { connect } from 'react-redux'
 
 import Models from './Models'
 import { setParticleContext } from '@/store/particle/action'
+import { changeOccupation } from '@/store/occupation/action'
 
 interface IndexPageProps extends React.HtmlHTMLAttributes<HTMLDivElement> {
   scrollAble: boolean
   scroll: boolean
   hasEnter: boolean
+  occupation: string | null
   onRef: React.Ref<any>
   setParticleContext: Function
+  changeOccupation: Function
 }
 
 let couldScroll = false
 let MainParticle: ParticleSystem | null = null
-let changing = true
 
 function IndexPage(props: IndexPageProps) {
   const wrapper = useRef<HTMLDivElement | null>(null)
@@ -47,9 +47,6 @@ function IndexPage(props: IndexPageProps) {
     new Tween.Tween(MainParticle!.AnimateEffectParticle!.rotation).to({ y: 0 }, 10000).easing(Tween.Easing.Quintic.Out).start()
     setTimeout(() => {
       MainParticle?.ChangeModel('logo', 1500)
-      setTimeout(() => {
-        changing = false
-      }, 1500)
     }, 1500)
   }
   let flag = true; let hasListen = false
@@ -78,11 +75,20 @@ function IndexPage(props: IndexPageProps) {
     if ((MainParticle == null) && wrapper.current != null) {
       MainParticle = new ParticleSystem({
         CanvasWrapper: wrapper.current,
-        Models
+        Models,
+        addons: Atomsphere
       })
       props.setParticleContext(MainParticle)
     }
   })
+
+  function onSlideChange(swiper: SwiperClass) {
+    if (swiper.activeIndex === 0) MainParticle?.ChangeModel('logo', 1500)
+    else if (swiper.activeIndex === 1) {
+      MainParticle?.ChangeModel('kv', 1500)
+      props.changeOccupation(null)
+    }
+  }
 
   return (
     <>
@@ -96,10 +102,10 @@ function IndexPage(props: IndexPageProps) {
           mousewheel={true}
           noSwiping={true}
           onSwiper={getSwiper}
+          onSlideChange={onSlideChange}
         >
           <SwiperSlide>
             {({ isActive }) => {
-              if (!changing && isActive) MainParticle?.ChangeModel('logo', 1500)
               return (
                 <CSSTransition
                   in={isActive}
@@ -117,7 +123,6 @@ function IndexPage(props: IndexPageProps) {
           </SwiperSlide>
           <SwiperSlide>
             {({ isActive }) => {
-              if (!changing && isActive) MainParticle?.ChangeModel('kv', 1500)
               return (
                 <CSSTransition
                   in={isActive}
@@ -141,9 +146,11 @@ function IndexPage(props: IndexPageProps) {
   )
 }
 
-export default connect(({ HasEnterStore }) => ({
+export default connect(({ HasEnterStore, OccupationStore }) => ({
   scrollAble: HasEnterStore.scrollAble,
-  hasEnter: HasEnterStore.hasEnter
+  hasEnter: HasEnterStore.hasEnter,
+  occupation: OccupationStore.occupation
 }), {
-  setParticleContext
+  setParticleContext,
+  changeOccupation
 })(IndexPage)
