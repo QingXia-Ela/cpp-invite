@@ -61,7 +61,7 @@ function Loading(props: LoadingProps) {
       ? (
         <div className={`${Styles.loading}${hide ? ` ${Styles.hide}` : ''}`}>
           <div className={Styles.logo_svg}>
-            <img src={logo} alt="CppTeam" />
+            <img src={logo} />
           </div>
           <div className={Styles.description}>2022 CppTeam Invitation</div>
           <Progress>{`${progress}%`}</Progress>

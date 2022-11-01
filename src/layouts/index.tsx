@@ -31,8 +31,6 @@ const Layout: React.FunctionComponent<LayoutProps> = (props) => {
       }, 5000)
     }
     if (props.finishLoadMark) {
-      console.log(props.finishLoadMark)
-
       LoadingRef.current?.FinishLoad()
     }
   }, [props.enter, props.finishLoadMark])

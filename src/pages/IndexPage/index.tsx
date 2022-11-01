@@ -97,6 +97,14 @@ function IndexPage(props: IndexPageProps) {
           noSwiping={true}
           onSwiper={getSwiper}
           onSlideChange={onSlideChange}
+          breakpoints={{
+            992: {
+              noSwiping: true
+            },
+            0: {
+              noSwiping: false
+            }
+          }}
         >
           <SwiperSlide>
             {({ isActive }) => {

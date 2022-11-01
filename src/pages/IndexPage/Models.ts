@@ -6,6 +6,7 @@ import g from '@/assets/images/gradient.png'
 
 import { addCnt } from '@/store/hasEnter/action'
 import store from '@/store'
+import isMobile from '@/utils/isMobile'
 
 let q = 0
 const texture = new THREE.TextureLoader().load(g)
@@ -14,10 +15,16 @@ const Models: ParticleModelProps[] = [{
   name: 'logo',
   path: new URL('../../assets/models/cpp.obj', import.meta.url).href,
   onLoadComplete(Geometry) {
-    const s = 6000
-    Geometry.scale(s, s, s)
     Geometry.rotateX(Math.PI * 0.5)
-    Geometry.translate(200, -650, 100)
+    if (isMobile()) {
+      const s = 4500
+      Geometry.scale(s, s, s)
+      Geometry.translate(-510, -400, 0)
+    } else {
+      const s = 6000
+      Geometry.scale(s, s, s)
+      Geometry.translate(200, -650, 100)
+    }
     store.dispatch(addCnt())
   },
   onEnterEnd(PointGeometry) {
