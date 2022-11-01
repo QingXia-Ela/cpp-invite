@@ -1,12 +1,16 @@
 
 import { AnyAction } from 'redux'
 
-import { ENTER, SCROLLABLE } from './constant'
+import { ENTER, SCROLLABLE, ADDCNT } from './constant'
 
 const initState = {
   hasEnter: false,
-  scrollAble: false
+  scrollAble: false,
+  finishLoad: false,
+  loadCnt: 0
 }
+
+const MainCount = 4
 
 function HasEnterStore(state = initState, action: AnyAction) {
   const newState = { ...state }
@@ -18,6 +22,10 @@ function HasEnterStore(state = initState, action: AnyAction) {
 
     case SCROLLABLE:
       newState.scrollAble = true
+      break
+    case ADDCNT:
+      newState.loadCnt++
+      if (newState.loadCnt === MainCount) newState.finishLoad = true
       break
 
     default:

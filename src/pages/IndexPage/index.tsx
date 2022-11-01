@@ -33,12 +33,6 @@ function IndexPage(props: IndexPageProps) {
   const wrapper = useRef<HTMLDivElement | null>(null)
   let swiperObj: SwiperClass
 
-  // @ts-expect-error
-  window.changeModel = (name: string) => {
-    if (MainParticle != null) {
-      MainParticle.ChangeModel(name)
-    }
-  }
   function getSwiper(swiper: SwiperClass) { swiperObj = swiper }
   function slideNext() { swiperObj?.slideNext() }
   function slidePrev() { swiperObj?.slidePrev() }

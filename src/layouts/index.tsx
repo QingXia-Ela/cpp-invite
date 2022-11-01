@@ -11,6 +11,7 @@ import { scroll } from '@/store/hasEnter/action'
 interface LayoutProps {
   enter: boolean
   scroll: Function
+  finishLoadMark: boolean
 }
 
 const Layout: React.FunctionComponent<LayoutProps> = (props) => {
@@ -29,20 +30,28 @@ const Layout: React.FunctionComponent<LayoutProps> = (props) => {
         setOuterScroll(true)
       }, 5000)
     }
-    setTimeout(() => {
+    if (props.finishLoadMark) {
+      console.log(props.finishLoadMark)
+
       LoadingRef.current?.FinishLoad()
-    }, 5000)
-  }, [props.enter])
+    }
+  }, [props.enter, props.finishLoadMark])
+
   return (
     <div className={Styles.layout}>
       <Loading onRef={LoadingRef} onEnter={onEnter} />
-      <StateBar />
-      <IndexPage onRef={IndexRef} scroll={outerScroll} />
-      <BottomText />
+      <React.Suspense>
+        <div className="w100 h100 por">
+          <StateBar />
+          <IndexPage onRef={IndexRef} scroll={outerScroll} />
+          <BottomText />
+        </div>
+      </React.Suspense>
     </div>
   )
 }
 
 export default connect(({ HasEnterStore }) => ({
-  enter: HasEnterStore.hasEnter
+  enter: HasEnterStore.hasEnter,
+  finishLoadMark: HasEnterStore.finishLoad
 }), { scroll })(Layout)

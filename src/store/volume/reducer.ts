@@ -1,15 +1,17 @@
-
 import { Action } from 'redux'
 import * as THREE from 'three'
 
 import { MUTE, UNMUTE } from './constant'
+
+import store from '@/store'
+import { addCnt } from '../hasEnter/action'
+
 const listener = new THREE.AudioListener()
 const sound = new THREE.Audio(listener)
 const audioLoader = new THREE.AudioLoader()
 audioLoader.load(new URL('../../assets/audio/bgm.mp3', import.meta.url).href, (buffer) => {
-  sound.setBuffer(buffer)
-  sound.setLoop(true)
-  sound.setVolume(0.2)
+  sound.setBuffer(buffer).setLoop(true).setVolume(0.2)
+  store.dispatch(addCnt())
 })
 
 const initState = {

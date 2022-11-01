@@ -22,7 +22,7 @@ let id: any
 function Loading(props: LoadingProps) {
   const [showUp, changeShowUp] = React.useState(true)
   const [hide, changeHide] = React.useState(false)
-  const [progress, changeProgress] = React.useState(100)
+  const [progress, changeProgress] = React.useState(0)
 
   React.useEffect(() => {
     Nprogress.start()

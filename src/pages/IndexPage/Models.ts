@@ -4,6 +4,9 @@ import kv from '@/assets/models/cpkv3'
 import qr from '@/assets/models/qr'
 import g from '@/assets/images/gradient.png'
 
+import { addCnt } from '@/store/hasEnter/action'
+import store from '@/store'
+
 let q = 0
 const texture = new THREE.TextureLoader().load(g)
 
@@ -15,6 +18,7 @@ const Models: ParticleModelProps[] = [{
     Geometry.scale(s, s, s)
     Geometry.rotateX(Math.PI * 0.5)
     Geometry.translate(200, -650, 100)
+    store.dispatch(addCnt())
   },
   onEnterEnd(PointGeometry) {
     const m = PointGeometry.material
@@ -33,6 +37,7 @@ const Models: ParticleModelProps[] = [{
     const s = 200
     Geometry.scale(s, s, s)
     Geometry.translate(0, -1100, -1300)
+    store.dispatch(addCnt())
   },
   onAnimationFrameUpdate(PerfromPoint, TweenList, g) {
     const p = PerfromPoint.geometry.getAttribute('position'); const sg = g!.getAttribute('position')
@@ -65,6 +70,7 @@ const Models: ParticleModelProps[] = [{
     Geometry.scale(s, s, s)
     Geometry.rotateZ(Math.PI)
     Geometry.translate(0, 0, 500)
+    store.dispatch(addCnt())
   },
   onEnterStart(PointGeometry) {
     const m = PointGeometry.material
