@@ -4,6 +4,7 @@ import IndexPage from '@/pages/IndexPage'
 import StateBar from './StateBar'
 import BottomText from './BottomText'
 import Loading, { LoadingMethods } from './Loading'
+import WebGLMask from './WebGL'
 
 import { connect } from 'react-redux'
 import { scroll } from '@/store/hasEnter/action'
@@ -37,6 +38,7 @@ const Layout: React.FunctionComponent<LayoutProps> = (props) => {
 
   return (
     <div className={Styles.layout}>
+      <WebGLMask />
       <Loading onRef={LoadingRef} onEnter={onEnter} />
       <React.Suspense>
         <div className="w100 h100 por">

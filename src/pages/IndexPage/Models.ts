@@ -67,15 +67,11 @@ const Models: ParticleModelProps[] = [{
 },
 {
   name: 'qr',
-  geometry: (() => {
-    const g = new THREE.BufferGeometry()
-    g.setAttribute('position', new THREE.Float32BufferAttribute(qr.vertices, 3))
-    return g
-  })(),
+  path: new URL('../../assets/models/qr/qr1.obj', import.meta.url).href,
   onLoadComplete(Geometry) {
-    const s = 400
+    const s = 100
     Geometry.scale(s, s, s)
-    Geometry.rotateZ(Math.PI)
+    Geometry.rotateX(Math.PI * 0.5)
     Geometry.translate(0, 0, 500)
     store.dispatch(addCnt())
   },
