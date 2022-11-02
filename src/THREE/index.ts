@@ -11,7 +11,6 @@ import { FocusShader } from 'three/examples/jsm/shaders/FocusShader'
 import Tween from '@tweenjs/tween.js'
 import type { Group as TweenGroup } from '@tweenjs/tween.js'
 
-import Stats from 'three/examples/jsm/libs/stats.module.js'
 import { throttle } from 'lodash'
 
 import g from '@/assets/images/gradient.png'
@@ -34,7 +33,6 @@ class ParticleSystem {
   private WIDTH: number
   private HEIGHT: number
   private readonly orbitControls?: OrbitControls
-  private stats?: Stats
   /** 主要表演场景对象 */
   public scene?: THREE.Scene
   /** 主要相机对象 */
@@ -102,8 +100,6 @@ class ParticleSystem {
     this.maxParticlesCount = 0
     // 创建场景
     this.createScene()
-    // 性能监控插件
-    this.initStats()
     // 载入模型
     this._addModels()
     // 效果器
@@ -141,9 +137,6 @@ class ParticleSystem {
     this.camera.position.set(0, 0, 1e3)
     this.camera.lookAt(new THREE.Vector3(0, 0, 0))
 
-    // 坐标轴辅助器
-    const axesHelper = new THREE.AxesHelper(500)
-    this.scene.add(axesHelper)
     // addons 添加
     if (this.addons != null) {
       this.addons.forEach((val) => {
@@ -188,19 +181,6 @@ class ParticleSystem {
     if (this.camera != null) {
       this.camera.aspect = this.WIDTH / this.HEIGHT
       this.camera.updateProjectionMatrix()
-    }
-  }
-
-  // 性能监控
-  private initStats() {
-    this.stats = Stats()
-    if (this.stats != null) {
-      // 将性能监控屏区显示在左上角
-      this.stats.domElement.style.position = 'absolute'
-      this.stats.domElement.style.bottom = '0px'
-      this.stats.domElement.style.top = '0px'
-      this.stats.domElement.style.zIndex = '100'
-      this.CanvasWrapper.appendChild(this.stats.domElement)
     }
   }
 
@@ -458,8 +438,6 @@ class ParticleSystem {
     this.MainParticleGroup?.update()
     // 外置的渲染函数
     this.onRendering?.call(this, t)
-    // 性能监测插件
-    this.stats?.update()
     // 场景旋转检测
     this._updateRotation()
     // 模型 update 钩子更新
