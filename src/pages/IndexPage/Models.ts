@@ -1,7 +1,6 @@
 import * as THREE from 'three'
 import { ParticleModelProps } from '@/declare/THREE'
 import kv from '@/assets/models/cpkv3'
-import qr from '@/assets/models/qr'
 import g from '@/assets/images/gradient.png'
 
 import { addCnt } from '@/store/hasEnter/action'
@@ -47,7 +46,7 @@ const Models: ParticleModelProps[] = [{
     store.dispatch(addCnt())
   },
   onAnimationFrameUpdate(PerfromPoint, TweenList, g) {
-    const p = PerfromPoint.geometry.getAttribute('position'); const sg = g!.getAttribute('position')
+    const p = PerfromPoint.geometry.getAttribute('position'); const sg = g.getAttribute('position')
     let a = 0
     TweenList.forEach((val, i) => {
       if (val.isPlaying === false) {
