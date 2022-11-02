@@ -17,6 +17,7 @@ import { throttle } from 'lodash'
 import g from '@/assets/images/gradient.png'
 import { ParticleModelProps, TWEEN_POINT } from '@/declare/THREE'
 import VerticesDuplicateRemove from '@/utils/VerticesDuplicateRemove.js'
+import BuiltinShaderAttributeName from '@/constant/THREE/BuiltinShaderAttributeName'
 
 function getRangeRandom(e: number, t: number) {
   return Math.random() * (t - e) + e
@@ -72,6 +73,7 @@ class ParticleSystem {
     Models: ParticleModelProps[]
     /** addons，他应该是一个继承了 `addonsBasic` 类的对象 */
     addons?: any[]
+    /** 粒子动画时间，默认 1500 */
     AnimateDuration?: number
     onModelsFinishedLoad?: (preformPoint: THREE_POINT, scene: THREE.Scene) => void
   }) {
@@ -139,9 +141,9 @@ class ParticleSystem {
     this.camera.position.set(0, 0, 1e3)
     this.camera.lookAt(new THREE.Vector3(0, 0, 0))
 
-    // // 坐标轴辅助器
-    // const axesHelper = new THREE.AxesHelper(300)
-    // this.scene.add(axesHelper)
+    // 坐标轴辅助器
+    const axesHelper = new THREE.AxesHelper(500)
+    this.scene.add(axesHelper)
     // addons 添加
     if (this.addons != null) {
       this.addons.forEach((val) => {
@@ -211,7 +213,7 @@ class ParticleSystem {
     const shaderPass = new ShaderPass(FocusShader)
     shaderPass.uniforms.screenWidth.value = window.innerWidth
     shaderPass.uniforms.screenHeight.value = window.innerHeight
-    shaderPass.uniforms.sampleDistance.value = 0.5
+    shaderPass.uniforms.sampleDistance.value = 0.4
     shaderPass.renderToScreen = true
 
     this.composer.addPass(renderPass)
@@ -226,7 +228,7 @@ class ParticleSystem {
     TextureLoader.crossOrigin = ''
     this.PointMaterial = new THREE.PointsMaterial({
       // 粒子大小
-      size: 7,
+      size: 5,
       // false:粒子尺寸相同 ;true：取决于摄像头远近
       sizeAttenuation: true,
       transparent: true,
@@ -267,9 +269,9 @@ class ParticleSystem {
             if (i.NeedRemoveDuplicateParticle === true) finalVertices = VerticesDuplicateRemove(finalVertices)
 
             finalGeometry = new THREE.BufferGeometry()
-            i.geometry = finalGeometry
             // 粒子去重
             finalGeometry.setAttribute('position', new THREE.BufferAttribute(VerticesDuplicateRemove(finalVertices), 3))
+            i.geometry = finalGeometry
             finishLoad()
           })
         }
@@ -344,10 +346,6 @@ class ParticleSystem {
    * @param {number?} time 动画时间长度，默认 `1500ms`
    */
   ChangeModel(name: string, time: number = this.AnimateDuration) {
-    if (this.CurrentUseModelName === name) {
-      if (process.env.NODE_ENV === 'development') console.warn('同名模型重复调用，操作已终止 (生产环境不展示该警告):' + name)
-      return
-    }
     const item = this.modelList.get(name)
 
     if (item == null) {
@@ -367,10 +365,14 @@ class ParticleSystem {
     }, time * 2)
     // 停止当前所有动画
     for (let i = 0; i < this.maxParticlesCount; i++) {
-      const p = this.ParticleAnimeMap[i]?.tweenctx
+      const p = this.ParticleAnimeMap[i]
       this.ParticleAnimeMap[i]!.isPlaying = true
       const cur = i % targetModel.count
-      p?.stop().to(
+      // 位置同步，解决 onAnimationFrameUpdate 回调更新时位置错误的问题
+      p.x = sourceModel.getX(i)
+      p.y = sourceModel.getY(i)
+      p.z = sourceModel.getZ(i)
+      p.tweenctx!.stop().to(
         {
           x: targetModel.array[cur * 3],
           y: targetModel.array[cur * 3 + 1],
@@ -382,12 +384,6 @@ class ParticleSystem {
         sourceModel.needsUpdate = true
       }).onStop((o) => {
         clearTimeout(TimerId)
-        // @ts-expect-error
-        o.tweenctx!._valuesStart.x = o.x
-        // @ts-expect-error
-        o.tweenctx!._valuesStart.y = o.y
-        // @ts-expect-error
-        o.tweenctx!._valuesStart.z = o.z
       }).start()
     }
     // 触发 addons 的钩子
@@ -468,8 +464,14 @@ class ParticleSystem {
     this._updateRotation()
     // 模型 update 钩子更新
     this.Models.forEach((val) => {
-      (val.name === this.CurrentUseModelName && val.onAnimationFrameUpdate != null) &&
-        val.onAnimationFrameUpdate(this.AnimateEffectParticle!, this.ParticleAnimeMap, val.geometry)
+      if (val.name === this.CurrentUseModelName && val.onAnimationFrameUpdate != null) {
+        if (val.onAnimationFrameUpdate(this.AnimateEffectParticle!, this.ParticleAnimeMap, val.geometry!) === true) {
+          for (const i of BuiltinShaderAttributeName) {
+            const p = this.AnimateEffectParticle?.geometry?.getAttribute(i)
+            if (p != null) { p.needsUpdate = true }
+          }
+        }
+      }
     })
     // addons 执行更新
     this.addons?.forEach((val) => {
