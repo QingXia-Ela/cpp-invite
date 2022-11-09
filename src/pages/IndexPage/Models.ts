@@ -7,8 +7,11 @@ import { addCnt } from '@/store/hasEnter/action'
 import store from '@/store'
 import isMobile from '@/utils/isMobile'
 
+import { TessellateModifier } from 'three/examples/jsm/modifiers/TessellateModifier'
+
 let q = 0
 const texture = new THREE.TextureLoader().load(g)
+const TM = new TessellateModifier(0.1)
 
 const Models: ParticleModelProps[] = [{
   name: 'logo',
@@ -37,6 +40,7 @@ const Models: ParticleModelProps[] = [{
   geometry: (() => {
     const g = new THREE.BufferGeometry()
     g.setAttribute('position', new THREE.Float32BufferAttribute(kv.vertices, 3))
+    TM.modify(g)
     return g
   })(),
   onLoadComplete(Geometry) {
